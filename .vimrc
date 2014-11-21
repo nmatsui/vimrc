@@ -1,6 +1,9 @@
 scriptencoding utf-8
 colorscheme elflord
 
+set encoding=utf-8
+set fileencodings=iso-2022-jp,cp932,sjis,euc-jp,utf-8
+
 " NeoBundle
 if has('vim_starting')
   set nocompatible
@@ -236,3 +239,13 @@ if !exists('b:char_counter_count')
   let b:char_counter_count = 0
 endif
 set stl+=\ %{b:char_counter_count}
+
+"go
+filetype off
+filetype plugin indent off
+set runtimepath+=$GOROOT/misc/vim
+filetype plugin indent on
+syntax on
+autocmd FileType go autocmd BufWritePre <buffer> Fmt
+exe "set rtp+=".globpath($GOPATH, "src/github.com/nsf/gocode/vim")
+set completeopt=menu,preview
