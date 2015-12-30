@@ -159,11 +159,11 @@ au FileType unite set nopaste
 "vimshell
 let g:vimshell_prompt_expr = 'escape(fnamemodify(getcwd(), ":~").">", "\\[]()?! ")." "'
 let g:vimshell_prompt_pattern = '^\(\f\|\\.\)\+> '
-nnoremap <silent> sh  :VimShell<CR>
+"nnoremap <silent> sh  :VimShell<CR>
 
 "simple-javascript-indenter
 let g:SimpleJSIndenter_BriefMode = 1
-let g:SimpleJSIndenter_CaseIndentLevel = -1
+"let g:SimpleJSIndenter_CaseIndentLevel = -1
 
 "vim-coffee-script
 autocmd BufWritePost *.coffee silent make!
