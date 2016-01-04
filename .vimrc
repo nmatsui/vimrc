@@ -1,8 +1,8 @@
 scriptencoding utf-8
-colorscheme elflord
+colorscheme koehler
 
 set encoding=utf-8
-set fileencodings=iso-2022-jp,cp932,sjis,euc-jp,utf-8
+set fileencodings=utf-8
 
 " NeoBundle
 if has('vim_starting')
@@ -24,7 +24,7 @@ NeoBundle 'kana/vim-submode'
 NeoBundle 'vim-ruby/vim-ruby'
 NeoBundle 'tpope/vim-rails'
 NeoBundle 'jelera/vim-javascript-syntax'
-NeoBundle 'jiangmiao/simple-javascript-indenter'
+"NeoBundle 'jiangmiao/simple-javascript-indenter'
 NeoBundle 'kchmck/vim-coffee-script'
 NeoBundle 'derekwyatt/vim-scala'
 NeoBundle 'plasticboy/vim-markdown'
@@ -39,6 +39,20 @@ NeoBundle 'Shougo/vimproc', {
   \     'mac' : 'make -f make_mac.mak',
   \     'unix' : 'make -f make_unix.mak',
   \    },
+  \ }
+
+NeoBundleLazy 'leafgarland/typescript-vim', {
+  \ 'autoload' : {
+  \     'filetypes' : ['typescript'] }
+  \ }
+NeoBundleLazy 'jason0x43/vim-js-indent', {
+  \ 'autoload' : {
+  \     'filetypes' : ['javascript', 'typescript', 'html'] }
+  \ }
+NeoBundleLazy 'clausreinke/typescript-tools.vim', {
+  \ 'build' : 'npm install -g',
+  \ 'autoload' : {
+  \     'filetypes' : ['typescript'] }
   \ }
 
 call neobundle#end()
@@ -108,6 +122,11 @@ call submode#map('bufmove', 'n', '', '<', '<C-w><')
 call submode#map('bufmove', 'n', '', '.', '<C-w>+')
 call submode#map('bufmove', 'n', '', ',', '<C-w>-')
 
+"simple-javascript-indenter
+"let g:SimpleJSIndenter_BriefMode = 1
+"let g:SimpleJSIndenter_CaseIndentLevel = -1
+
+
 "neocomplete
 if neobundle#is_installed('neocomplete')
   let g:neocomplete#enable_at_startup = 1
@@ -161,9 +180,6 @@ let g:vimshell_prompt_expr = 'escape(fnamemodify(getcwd(), ":~").">", "\\[]()?! 
 let g:vimshell_prompt_pattern = '^\(\f\|\\.\)\+> '
 "nnoremap <silent> sh  :VimShell<CR>
 
-"simple-javascript-indenter
-let g:SimpleJSIndenter_BriefMode = 1
-"let g:SimpleJSIndenter_CaseIndentLevel = -1
 
 "vim-coffee-script
 autocmd BufWritePost *.coffee silent make!
