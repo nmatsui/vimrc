@@ -1,5 +1,5 @@
 scriptencoding utf-8
-colorscheme koehler
+colorscheme default
 
 set encoding=utf-8
 set fileencodings=utf-8
@@ -21,16 +21,16 @@ NeoBundle 'Shougo/unite.vim'
 NeoBundle 'Shougo/neomru.vim'
 NeoBundle 'Shougo/vimshell.vim'
 NeoBundle 'kana/vim-submode'
-NeoBundle 'vim-ruby/vim-ruby'
-NeoBundle 'tpope/vim-rails'
-NeoBundle 'jelera/vim-javascript-syntax'
-"NeoBundle 'jiangmiao/simple-javascript-indenter'
-NeoBundle 'kchmck/vim-coffee-script'
-NeoBundle 'derekwyatt/vim-scala'
-NeoBundle 'plasticboy/vim-markdown'
-NeoBundle 'kannokanno/previm'
-NeoBundle 'tyru/open-browser.vim'
 NeoBundle 'itchyny/lightline.vim'
+
+"NeoBundle 'vim-ruby/vim-ruby'
+"NeoBundle 'tpope/vim-rails'
+NeoBundle 'jelera/vim-javascript-syntax'
+"NeoBundle 'kchmck/vim-coffee-script'
+"NeoBundle 'derekwyatt/vim-scala'
+"NeoBundle 'plasticboy/vim-markdown'
+"NeoBundle 'kannokanno/previm'
+"NeoBundle 'tyru/open-browser.vim'
 
 NeoBundle 'Shougo/vimproc', {
   \ 'build' : {
@@ -54,12 +54,14 @@ NeoBundleLazy 'clausreinke/typescript-tools.vim', {
   \ 'autoload' : {
   \     'filetypes' : ['typescript'] }
   \ }
+autocmd FileType typescript set omnifunc=TSScompleteFunc
 
 call neobundle#end()
 
 filetype plugin indent on
 
 NeoBundleCheck
+
 
 "display
 syntax on
@@ -122,11 +124,6 @@ call submode#map('bufmove', 'n', '', '<', '<C-w><')
 call submode#map('bufmove', 'n', '', '.', '<C-w>+')
 call submode#map('bufmove', 'n', '', ',', '<C-w>-')
 
-"simple-javascript-indenter
-"let g:SimpleJSIndenter_BriefMode = 1
-"let g:SimpleJSIndenter_CaseIndentLevel = -1
-
-
 "neocomplete
 if neobundle#is_installed('neocomplete')
   let g:neocomplete#enable_at_startup = 1
@@ -135,6 +132,10 @@ if neobundle#is_installed('neocomplete')
     let g:neocomplete#keyword_patterns = {}
   endif
   let g:neocomplete#keyword_patterns._ = '\h\w*'
+  if !exists('g:neocomplete#force_omni_input_patterns')
+    let g:neocomplete#force_omni_input_patterns = {}
+  endif
+  let g:neocomplete#force_omni_input_patterns.typescript = '[^. \t]\.\%(\h\w*\)\?'
 elseif neobundle#is_installed('neocomplcache')
   let g:neocomplcache_enable_at_startup = 1
   let g:neocomplcache_enable_smart_case = 1
@@ -161,7 +162,7 @@ if has('conceal')
 endif
 
 "unite
-"let g:unite_enable_start_insert = 1
+let g:unite_enable_start_insert = 1
 nnoremap <silent> ff :<C-u>Unite -no-split -buffer-name=files file file/new<CR>
 nnoremap <silent> fb :<C-u>Unite -no-split buffer<CR>
 nnoremap <silent> fm :<C-u>Unite -no-split file_mru file/new<CR>
@@ -178,35 +179,33 @@ au FileType unite set nopaste
 "vimshell
 let g:vimshell_prompt_expr = 'escape(fnamemodify(getcwd(), ":~").">", "\\[]()?! ")." "'
 let g:vimshell_prompt_pattern = '^\(\f\|\\.\)\+> '
-"nnoremap <silent> sh  :VimShell<CR>
-
 
 "vim-coffee-script
-autocmd BufWritePost *.coffee silent make!
+"autocmd BufWritePost *.coffee silent make!
 
 "for Markdown
-au BufRead,BufNewFile *.md set filetype=markdown
+"au BufRead,BufNewFile *.md set filetype=markdown
 
 "for fcitx
-let g:input_toggle = 1
-function! Fcitx2en()
-   let s:input_status = system("fcitx-remote")
-   if s:input_status == 2
-      let g:input_toggle = 1
-      let l:a = system("fcitx-remote -c")
-   endif
-endfunction
+"let g:input_toggle = 1
+"function! Fcitx2en()
+"   let s:input_status = system("fcitx-remote")
+"   if s:input_status == 2
+"      let g:input_toggle = 1
+"      let l:a = system("fcitx-remote -c")
+"   endif
+"endfunction
+"
+"function! Fcitx2zh()
+"   let s:input_status = system("fcitx-remote")
+"   if s:input_status != 2 && g:input_toggle == 1
+"      let l:a = system("fcitx-remote -o")
+"      let g:input_toggle = 0
+"   endif
+"endfunction
 
-function! Fcitx2zh()
-   let s:input_status = system("fcitx-remote")
-   if s:input_status != 2 && g:input_toggle == 1
-      let l:a = system("fcitx-remote -o")
-      let g:input_toggle = 0
-   endif
-endfunction
-
-set ttimeoutlen=150
-autocmd InsertLeave * call Fcitx2en()
+"set ttimeoutlen=150
+"autocmd InsertLeave * call Fcitx2en()
 "autocmd InsertEnter * call Fcitx2zh()
 
 "for statusline
@@ -257,11 +256,11 @@ endif
 set stl+=\ %{b:char_counter_count}
 
 "go
-filetype off
-filetype plugin indent off
-set runtimepath+=$GOROOT/misc/vim
-filetype plugin indent on
-syntax on
-autocmd FileType go autocmd BufWritePre <buffer> Fmt
-exe "set rtp+=".globpath($GOPATH, "src/github.com/nsf/gocode/vim")
-set completeopt=menu,preview
+"filetype off
+"filetype plugin indent off
+"set runtimepath+=$GOROOT/misc/vim
+"filetype plugin indent on
+"syntax on
+"autocmd FileType go autocmd BufWritePre <buffer> Fmt
+"exe "set rtp+=".globpath($GOPATH, "src/github.com/nsf/gocode/vim")
+"set completeopt=menu,preview
